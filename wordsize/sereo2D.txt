@@ -1,0 +1,197 @@
+#include<bits/stdc++.h>
+# define MAX 100
+using namespace std;
+
+template <typename T>
+int deletion(T arr[],int n,int pos)
+{
+	if(pos==n+1){ return (n-1); }
+	swap(arr[pos-1],arr[n]);
+    return deletion(arr,n-1,pos);
+}
+
+template <typename T>
+int insert(T a[],int n,int pos,int val)
+{
+	if(pos==n+1){ return (n+1); }
+    swap(a[pos-1],a[n]);
+    return insert(a,n,pos+1,val);
+}
+
+template <class T>
+class ULDS2D{
+	 T f[MAX][MAX];
+	 int s[MAX],r;
+	 public:
+	 	ULDS2D()
+		 {
+		   for(int i=0;i<MAX;i++)
+		   {
+		   	s[i]=0;
+		   }
+		   r=0;
+		 }
+		void uinput(int n,int k=0)
+		{
+            int i=s[k];
+            s[k]+=n;
+			while(n--)
+			{
+				cin>>f[k][i];
+				i++;
+			}
+			r++;
+		}
+		void minput(T a[],int n,int k=0)
+		{
+            int i=s[k],j=0;
+            s[k]+=n;
+            r++;
+			while(n--)
+			{
+				f[k][i]=a[j];
+				i++; j++;
+			}
+		}
+	 	void show()
+	 	{
+			for(int i=0;i<r;i++)
+	 		{	
+	 			for(int j=0;j<s[i];j++)
+	 			{
+	 				cout<<f[i][j]<<" ";
+				}
+				cout<<"\n";
+			}
+		}
+		void push_back(T k,int n=0)
+		{
+			f[n][s[n]]=k;
+			s[n]++;
+		}
+		void push_front(T k,int n=0)
+		{
+			add(1,k,n);
+		}
+		
+		void pop(int k=0)
+		{
+			remove(s[k],k);
+		}
+		
+		void pop_front(int k=0)
+		{
+			remove(1,k);
+		}
+		void remove(int p,int k=0)
+        {
+	     deletion(f[k],s[k],p);
+	     s[k]--;
+        }
+        void add(int pos,T val,int k=0)
+        {
+        	f[k][s[k]]=val;
+            insert(f[k],s[k],pos,val);
+            s[k]++;
+		}
+		T get(int p,int k=0)
+	    {
+	    	return f[k][p];
+		}
+		
+		void rev(int k=0)
+		{
+			reverse(f[k],f[k]+s[k]);
+		}
+		
+		void ascsort(int k=0)
+		{
+			sort(f[k],f[k]+s[k]);
+		}
+		
+		void descsort(int k=0)
+		{
+			sort(f[k],f[k]+s[k]);
+			reverse(f[k],f[k]+s[k]);
+		}
+		
+		int count(int k,int n=0)
+		{
+			int c=0;
+			for(int i=0;i<s[n];i++)
+			{
+				if(f[n][i]==k)
+				{
+					c++;
+				}
+			}
+			return c;
+		}
+		
+		int find(int k,int i=0,int n=0)
+		{
+			for(i;i<s[n];i++)
+			{
+				if(f[n][i]==k)
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+		
+		T min(int s1=0,int k=0)
+        {
+         	int p=f[k][s1];
+	        for(int i=s1;i<s[k];i++)
+	        {
+		      if(f[k][i]<p)
+		      {
+			    p=f[k][i];
+		      }
+		    }
+		      return p;
+	    }
+	   
+        T max(int s1=0,int k=0)
+        {
+         	int p=f[k][s1];
+	        for(int i=s1;i<s[k];i++)
+	        {
+		      if(f[k][i]>p)
+		      {
+			    p=f[k][i];
+		      }
+		    }
+		      return p;
+	    }
+	    
+	    void shape()
+	    {
+	    	cout<<"( "<<s[0]<<" , "<<r<<" )"<<"\n";
+		}
+		
+		void transpose()
+		{
+			int a[r][s[0]];
+			for(int i=0;i<r;i++)
+			{
+				for(int j=0;j<s[i];j++)
+				{
+					a[i][j]=f[i][j];
+				}
+			}
+			
+			for(int i=0;i<r;i++)
+			{
+				for(int j=0;j<s[i];j++)
+				{
+					f[j][i]=a[i][j];
+				}	
+			}
+		}
+		
+		
+};
+
+
